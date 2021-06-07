@@ -30,10 +30,27 @@
 <script type="text/javascript">
 	// 검색 / page 두가지 경우 모두 Form 전송을 위해 JavaScrpt 이용  
 	function fncGetList(currentPage) {
-		$('input[name=""]')
-		document.getElementById("currentPage").value = currentPage;
-		document.detailForm.submit();
+		//document.getElementById("currentPage").value = currentPage;
+		$("input[name='currentPage']").val(currentPage)
+		//document.detailForm.submit();
+		$("form[name='detailForm']").attr("method","POST").attr("action","/purchase/listPurchase").submit();
 	}
+	
+	$(function(){
+		
+		$(".ct_list_pop td:nth-child(1)").on("click", function(){
+			
+			self.location=$('.tranNo',$(this)).text();
+			
+		})
+		
+		$(".ct_list_pop td:nth-child(3)").on("click", function(){
+			
+			self.location=$('.buyerId',$(this)).text();
+			
+		})
+		
+	})
 </script>
 
 </head>
@@ -86,11 +103,15 @@
 	
 	<tr class="ct_list_pop">
 		<td align="center">
-			<a href="/purchase/getPurchase?tranNo=${purchase.tranNo}">${ i }</a>
+			${ i }
+			<div style="display : none" class="tranNo">/purchase/getPurchase?tranNo=${purchase.tranNo}</div>
+			<!-- <a href="/purchase/getPurchase?tranNo=${purchase.tranNo}">${ i }</a> -->
 		</td>
 		<td></td>
 		<td align="left">
-			<a href="/user/getUser?userId=${purchase.buyer.userId}">${purchase.buyer.userId}</a>
+			${purchase.buyer.userId}
+			<div style="display : none" class="buyerId">/user/getUser?userId=${purchase.buyer.userId}</div>
+			<!-- <a href="/user/getUser?userId=${purchase.buyer.userId}">${purchase.buyer.userId}</a> -->
 		</td>
 		<td></td>
 		<td align="left">${purchase.receiverName}</td>

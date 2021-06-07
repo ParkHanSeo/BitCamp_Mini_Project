@@ -23,6 +23,7 @@
 		$("form[name='detailForm']").attr("method" , "POST").attr("action" , "/product/listProduct?menu=${! empty menu && menu == 'manage' ? 'manage' : 'search'}").submit();
 			
 	}
+
 	
 	$(function(){
 		// 검색
@@ -30,19 +31,27 @@
 			fncGetList(1);
 		});
 		
+		
 		//menager&search
 		$( ".ct_list_pop td:nth-child(3)" ).on("click" , function() {
-			if(menu == manage){
-				self.location = "/product/updateProductView?prodNo=${product.prodNo}&menu=manage"+$(this).text().tram();
-			}else if(menu == search){
-				self.location = "/product/getProduct?prodNo=${product.prodNo}&menu=search"+$(this).text().tram();
-			}
+			
+			self.location=$('.product', $(this)).text();
 			
 		});
-					
+		
+		$(".ct_list_pop td:contains('배송하기')").on("click", function(){
+			
+			self.location=$('.tranCode', $(this)).text();
+			
+		});
+		
+		//==> UI 수정 추가부분  :  userId LINK Event End User 에게 보일수 있도록 
+		$( ".ct_list_pop td:nth-child(3)" ).css("color" , "red");
+		$("h7").css("color" , "red");
+		
 		$(".ct_list_pop:nth-child(4n+6)" ).css("background-color" , "whitesmoke");
 		
-	})
+	});
 	
 	
 </script>
@@ -138,14 +147,20 @@
 		<td align="center">${ i }</td>
 		<td></td>
 		<td align="left">
-			${product.prodName}
-		</td>	
-		<!--<c:if test="${menu=='manage'}">
-		<a href="/product/updateProductView?prodNo=${product.prodNo}&${! empty menu && menu == 'manage' ? 'menu=manage' : 'menu=search'}">${product.prodName} </a>	
+		
+			
+		<c:if test="${menu=='manage'}">
+				${product.prodName}
+				<div style="display : none" class="product">/product/updateProductView?prodNo=${product.prodNo}&$menu=manage</div>
+		<!--<a href="/product/updateProductView?prodNo=${product.prodNo}&${! empty menu && menu == 'manage' ? 'menu=manage' : 'menu=search'}">${product.prodName} </a> -->	
 		</c:if>
 		<c:if test="${menu=='search'}">
-		<a href="/product/getProduct?prodNo=${product.prodNo}&${! empty menu && menu == 'search' ? 'menu=search' : 'menu=manage'}">${product.prodName} </a>	
-		</c:if>-->
+				${product.prodName}
+				<div style="display : none" class="product">/product/getProduct?prodNo=${product.prodNo}&$menu=search</div>
+		<!-- <a href="/product/getProduct?prodNo=${product.prodNo}&${! empty menu && menu == 'search' ? 'menu=search' : 'menu=manage'}">${product.prodName} </a>-->	
+		</c:if>
+		
+		</td>
 		<td></td>
 		<td align="left">${product.price}</td>
 		<td></td>
@@ -159,7 +174,9 @@
 								</c:when>
 								<c:when test="${ product.proTranCode eq '1  ' }">
 									결제완료
-									<a href="/purchase/updateTranCodeByProd?prodNo=${ product.prodNo }&tranCode=2">배송하기</a>
+									<!-- <a href="/purchase/updateTranCodeByProd?prodNo=${ product.prodNo }&tranCode=2">배송하기</a> -->
+									<div style="display : none" class="tranCode">/purchase/updateTranCodeByProd?prodNo=${ product.prodNo }&tranCode=2</div>
+									배송하기
 								</c:when>
 								<c:when test="${ product.proTranCode eq '2  ' }">
 									배송중

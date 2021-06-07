@@ -78,18 +78,23 @@
 	
 	<select  id="getTotalCount"  parameterType="search"	 resultType="int">
 	  	SELECT COUNT(*)
-	  	FROM(	SELECT prod_name, price, reg_date, tran_code
-						FROM product
+	  	FROM(	SELECT p.prod_no , 
+	  				   p.prod_name , 
+	  				   p.price , 
+	  				   p.reg_date , 
+	  				   t.tran_status_code 
+					   FROM product p , transaction t
+					   WHERE p.prod_no = t.prod_no(+)
 						<if test="searchCondition != null">
-							<where>
-								<if test="searchCondition == 0 and searchKeyword !='' ">
-						 			prod_no = #{searchKeyword}
-								</if>
-								<if test="searchCondition == 1 and searchKeyword !='' ">
-						 			prod_name = #{searchKeyword}
-								</if>
-							</where>
-						</if> ) countTable						
+							<choose>
+								<when test="searchCondition == 0 and searchKeyword !='' ">
+						 			AND p.prod_no like '%${searchKeyword}%' 
+								</when>
+								<when test="searchCondition == 1 and searchKeyword !='' ">
+						 			AND p.prod_name like '%${searchKeyword}%' 
+								</when>
+							</choose>
+						</if> ) countTable				
 	 </select>
 	
 	

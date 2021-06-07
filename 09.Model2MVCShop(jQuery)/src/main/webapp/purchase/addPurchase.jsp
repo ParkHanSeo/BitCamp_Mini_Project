@@ -19,7 +19,7 @@
 
 <body>
 
- <form name="addPurchase" action="/purchase/addPurchaseView?tranNo=${purchase.tranNo}" method="post">
+
 
 다음과 같이 구매가 되었습니다.
 
@@ -70,7 +70,7 @@
 		<td>${purchase.divyDate}</td>
 	</tr>
 </table>
-</form>
+
 
 </body>
 </html>

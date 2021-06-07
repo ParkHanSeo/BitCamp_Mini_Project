@@ -50,7 +50,7 @@ public class ProductController {
 	@RequestMapping(value="addProduct", method=RequestMethod.POST)
 	public String addProduct(@ModelAttribute("product") Product product) throws Exception{
 		
-		System.out.println("/addProduct.do 실행");
+		System.out.println("/addProduct 실행");
 		
 		product.setManuDate(product.getManuDate().replaceAll("-", ""));
 		
@@ -127,24 +127,29 @@ public class ProductController {
 	
 	//@RequestMapping("/updateProduct.do")
 	@RequestMapping(value="updateProduct", method=RequestMethod.POST)
-	public String updateProduct(@ModelAttribute("product")Product product, Model model)throws Exception{
+	public String updateProduct(@ModelAttribute("product")Product product, 
+								@RequestParam("prodNo")int prodNo,
+								Model model)throws Exception{
 		
-		System.out.println("/updateProduct.do 실행");
+		System.out.println("/updateProduct 실행");
 		
 		productService.updateProduct(product);
 		
 		model.addAttribute("product", product);
 		
-		return "redirect:/getProduct.do?prodNo="+product.getProdNo();
+		System.out.println(prodNo+" 여기는 prodNo");
+		return "redirect:/product/getProduct?prodNo="+prodNo;
 	}
 	
 	//@RequestMapping("/updateProductView.do")
 	@RequestMapping(value="updateProductView", method=RequestMethod.GET)
 	public String updateProductView(@RequestParam("prodNo")int prodNo, Model model )throws Exception{
 		
-		
+		Product product = productService.getProduct(prodNo);
 		
 		model.addAttribute("product",productService.getProduct(prodNo));
+		
+		model.addAttribute("product",product);
 		
 		return "forward:/product/updateProductView.jsp";
 		
