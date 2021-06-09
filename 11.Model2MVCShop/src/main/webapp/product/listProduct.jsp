@@ -125,11 +125,11 @@
 			
 		});
 		
-		/*$(".ct_list_pop td:contains('배송하기')").on("click", function(){
-			alert("1");
+		$(".ct_list_pop td:contains('배송하기')").on("click", function(){
+			
 			self.location=$('.tranCode', $(this)).text();
 			
-		});*/
+		});
 		
 
 		
@@ -211,7 +211,7 @@
       
       
       
-		<tbody>
+		<tbody class="ct_list_pop">
 		
 		  <c:set var="i" value="0" />
 		  <c:forEach var="product" items="${list}">
@@ -240,10 +240,9 @@
 								</c:when>
 								<c:when test="${ product.proTranCode eq '1  ' }">
 									결제완료
-	   							<c:if test="${menu=='manage' }">
-	   								배송하기
-	   								<span style="display: none" class="hidden_link">/purchase/updateTranCode?prodNo=${product.prodNo }&tranCode=2</span>
-	   							</c:if>
+									<!-- <a href="/purchase/updateTranCodeByProd?prodNo=${ product.prodNo }&tranCode=2">배송하기</a> -->
+									<div style="display : none" class="tranCode">/purchase/updateTranCodeByProd?prodNo=${ product.prodNo }&tranCode=2</div>
+									배송하기
 								</c:when>
 								<c:when test="${ product.proTranCode eq '2  ' }">
 									배송중
