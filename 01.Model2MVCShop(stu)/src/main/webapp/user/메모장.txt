@@ -1,0 +1,77 @@
+		String sql = "SELECT" + 
+				" u.*, p.*, t.*" + 
+				" from users u, product p, transaction t" + 
+				" where t.prod_no = p.prod_no" + 
+				" AND u.user_id = t.buyer_id" +
+				" AND buyer_id = '" + buyerId + "'";
+				
+String sql = "SELECT" +
+			 "FROM(SELECT ROW_NUMBER() OVER(order by user_id) rn , " +
+			 "ts.tran_no, u.user_id, NVL(ts.tran_status_code,0) tran_code, COUNT(*)OVER() count " +	
+			 "FROM users u, transaction ts " +
+			 "WHERE u.user_id = ts.buyer_id AND u.user_id = ? )purchase " +
+			 "WHERE rn BETWEEN ? AND ? ";
+			 
+			 
+			 
+			 
+		HashMap<String,Object> map = new HashMap<String,Object>();
+		map.put("count", new Integer(total));
+
+		rs.absolute(searchVO.getCurrentPage() * searchVO.getPageSize() - searchVO.getPageSize()+1);
+		System.out.println("searchVO.getPage():" + searchVO.getCurrentPage());
+		System.out.println("searchVO.getPageUnit():" + searchVO.getPageSize());
+		
+		ArrayList<PurchaseVO> list = new ArrayList<PurchaseVO>();
+		if (total > 0) {
+			for (int i = 0; i < searchVO.getPageSize(); i++) {
+				PurchaseVO vo = new PurchaseVO();
+				UserVO userVO = new UserVO();
+				userVO.setUserId(rs.getString("buyer_id"));
+				vo.setBuyer(userVO);
+				vo.setTranNo(rs.getInt("tran_No"));
+				vo.setReceiverName(rs.getString("receiver_Name"));
+				vo.setReceiverPhone(rs.getString("receiver_Phone"));
+				vo.setTranCode(rs.getString("tran_status_Code"));
+				list.add(vo);
+				if(!rs.next())
+					break;
+				}
+			}
+		
+		System.out.println("list.size() : "+ list.size());
+		map.put("list", list);
+		System.out.println("map().size() : "+ map.size());
+		
+		con.close();
+		
+		return map;
+		
+	}
+	
+	
+	
+	
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT purchase.* ");
+		sql.append("FROM(SELECT ROW_NUMBER() OVER(order by user_id) rn , ");
+		sql.append("ts.tran_no, u.user_id, NVL(ts.tran_status_code,0) tran_code, COUNT(*)OVER() count ");
+		sql.append("FROM users u, transaction ts ");
+		sql.append("WHERE u.user_id = ts.buyer_id AND u.user_id = ? )purchase ");
+		
+		
+		String sql =("SELECT purchase.* " +
+				     "FROM(SELECT ROW_NUMBER() OVER(order by user_id) rn , " +
+				     "ts.tran_no, u.user_id, NVL(ts.tran_status_code,0) tran_code, COUNT(*)OVER() count " +
+				     "FROM users u, transaction ts " +
+				     "WHERE u.user_id = ts.buyer_id AND u.user_id = ? )purchase ");
+				     
+				
+		
+		
+		
+		
+		
+		
+		
+		

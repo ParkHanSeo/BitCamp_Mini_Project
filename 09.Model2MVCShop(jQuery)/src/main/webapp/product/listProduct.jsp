@@ -33,11 +33,20 @@
 		
 		
 		//menager&search
-		$( ".ct_list_pop td:nth-child(3)" ).on("click" , function() {
+	
+		$('.manage').on('click',function(){
 			
-			self.location=$('.product', $(this)).text();
+			self.location ="/product/updateProductView?prodNo="+$(this).attr('prodNo');
 			
 		});
+	
+		$('.search').on('click',function(){
+			
+			self.location ="/product/getProduct?prodNo="+$(this).attr('prodNo');
+			
+		});
+		
+		
 		
 		$(".ct_list_pop td:contains('배송하기')").on("click", function(){
 			
@@ -103,7 +112,7 @@
 						<img src="/images/ct_btnbg01.gif" width="17" height="23"/>
 					</td>
 					<td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top:3px;">
-						<a href="javascript:fncGetProductList('1');">검색</a>
+						검색
 					</td>
 					<td width="14" height="23">
 						<img src="/images/ct_btnbg03.gif" width="14" height="23"/>
@@ -150,13 +159,13 @@
 		
 			
 		<c:if test="${menu=='manage'}">
-				${product.prodName}
-				<div style="display : none" class="product">/product/updateProductView?prodNo=${product.prodNo}&$menu=manage</div>
+				
+				<div class="manage" prodNo="${product.prodNo}">${product.prodName}</div>
 		<!--<a href="/product/updateProductView?prodNo=${product.prodNo}&${! empty menu && menu == 'manage' ? 'menu=manage' : 'menu=search'}">${product.prodName} </a> -->	
 		</c:if>
 		<c:if test="${menu=='search'}">
-				${product.prodName}
-				<div style="display : none" class="product">/product/getProduct?prodNo=${product.prodNo}&$menu=search</div>
+				
+				<div class="search" prodNo="${product.prodNo}">${product.prodName}</div>
 		<!-- <a href="/product/getProduct?prodNo=${product.prodNo}&${! empty menu && menu == 'search' ? 'menu=search' : 'menu=manage'}">${product.prodName} </a>-->	
 		</c:if>
 		
